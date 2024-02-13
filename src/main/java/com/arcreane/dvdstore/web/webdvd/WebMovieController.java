@@ -8,9 +8,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class WebMovieController implements IMovieController {
     @Autowired
     protected IMovieService service;
 
-    @RequestMapping("/My_DVD_Store")
+    @GetMapping("/My_DVD_Store")
     public String displayHome(Model model) {
         var movies = service.getAllMovies();
         model.addAttribute("DVDList", movies);
@@ -33,7 +32,7 @@ public class WebMovieController implements IMovieController {
         return service.getAllMovies();
     }
 
-    @RequestMapping("/{MovieTitle}")
+    @GetMapping("/{MovieTitle}")
     public ModelAndView displayInfoOnMovie(@PathVariable("MovieTitle") String p_MovieName) {
         var movie = service.getMovieByName(p_MovieName);
         ModelAndView mv = new ModelAndView("dvd-details");
@@ -41,12 +40,20 @@ public class WebMovieController implements IMovieController {
         return mv;
     }
 
+    @GetMapping("/add-dvd")
+    public String displayForm(@ModelAttribute MovieForm dvdToCreate) {
+        return "dvd-create";
+    }
+
+    @PostMapping("dvd-create")
+    public String createNewDVDEntry(@ModelAttribute MovieForm dvdToCreate, BindingResult result) {
+        if(result.hasErrors())
+            return "dvd-create";
+        service.registerMovie(dvdToCreate.convertToMovie());
+        return "dvd-info-creation";
+    }
+
     @Override
     public void AddMovie() {
-
     }
-//    @Override
-//    public void AddMovie() {
-//        System.out.println("Je fais rien");
-//    }
 }
