@@ -4,6 +4,7 @@ import com.arcreane.dvdstore.core.controller.IMovieController;
 import com.arcreane.dvdstore.core.entity.Movie;
 import com.arcreane.dvdstore.core.service.IMovieService;
 import com.arcreane.dvdstore.core.service.web.WebMovieService;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,22 +32,22 @@ public class WebMovieController implements IMovieController {
     public @ModelAttribute("MyDvds") List<Movie> displaySecondHome(Model model) {
         return service.getAllMovies();
     }
-
-    @GetMapping("/{MovieTitle}")
-    public ModelAndView displayInfoOnMovie(@PathVariable("MovieTitle") String p_MovieName) {
-        var movie = service.getMovieByName(p_MovieName);
-        ModelAndView mv = new ModelAndView("dvd-details");
-        mv.addObject("dvd", movie);
-        return mv;
-    }
+//
+//    @GetMapping("/{MovieTitle}")
+//    public ModelAndView displayInfoOnMovie(@PathVariable("MovieTitle") String p_MovieName) {
+//        var movie = service.getMovieByName(p_MovieName);
+//        ModelAndView mv = new ModelAndView("dvd-details");
+//        mv.addObject("dvd", movie);
+//        return mv;
+//    }
 
     @GetMapping("/add-dvd")
     public String displayForm(@ModelAttribute MovieForm dvdToCreate) {
         return "dvd-create";
     }
 
-    @PostMapping("dvd-create")
-    public String createNewDVDEntry(@ModelAttribute MovieForm dvdToCreate, BindingResult result) {
+    @PostMapping("dvd-creation")
+    public String createNewDVDEntry(@Valid @ModelAttribute MovieForm dvdToCreate, BindingResult result) {
         if(result.hasErrors())
             return "dvd-create";
         service.registerMovie(dvdToCreate.convertToMovie());

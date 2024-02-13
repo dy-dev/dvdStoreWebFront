@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action = "@{/DVDStore/dvd-create}" th:object="${movieForm}">
+<form th:action = "@{/DVDStore/dvd-creation}" method="post" th:object="${movieForm}">
     <p>Title : <input type="text" th:field="*{name}"/></p>
     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
