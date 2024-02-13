@@ -2,19 +2,19 @@
 <html lang="fr" xmlns:th="http://wwww.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>My DVD Store</title>
+    <title>This is the demo</title>
 
 </head>
 <body>
-<H1> Bienvenu(e) dans notre page de DVD</H1>
+<H1> New home for the brave</H1>
 <h2>Actions disponibles</h2>
-<a href="DVD/add-dvd">Ajouter un nouveau DVD</a>
-<h2>Liste des DVD déjà disponibles</h2>
+<a href="DVD/add-dvd">Add un nouveau DVD</a>
+<h2>DVS in base</h2>
 
 <table border="1">
-    <tr th:each="dvd:${DVDList}">
+    <tr th:each="dvd:${MyDvds}">
         <td>
-            <a href="" th:text="${dvd.name}"/>
+            <a th:href="@{/DVDStore/{DvdTitle}(DvdTitle=${dvd.name})}" th:text="${dvd.name}"/>
             <!--            <a th:href="${book.title}" th:text="${book.title}"/>-->
         </td>
         <td>
